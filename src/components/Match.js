@@ -1,30 +1,41 @@
-import React from 'react';
-import MatchList from './MatchList';
+import React, { useState } from 'react';
 
 export default function Match(props) {
-  console.log("log",props.matchData);
-  // const matchDataArr =Object.values(props);
-  // console.log(matchDataArr);
-  const renderMatch =props.matchData.map((value,index)=>{
-    console.log("index",index);
-    console.log("value",value);
-    return(
-      <div key ={index}>
-        {/* {value.players} */}
-      <h1 >
-        {value.players[0]} <span>vs</span> {value.players[1]}
-        </h1>
-        <h2>
-        {value.winner} is the winner by {value.scoreDifference}!
-        </h2>
-      {value.scoreDifference === 0 && <h2>No winners yet!</h2>}
-      </div>
-    ) 
-  })
-  console.log(renderMatch);
+  // console.log(props);
+  const matchData = props.matchData;
+  const [winner, setWinner] = useState(matchData.winner);
+  let winnerText;
+  if (winner === 0) {
+    winnerText = <h2>No winners yet!</h2>;
+  } else {
+    winnerText = (
+      <h2>
+        {matchData.winnerName} is the winner by {matchData.scoreDifference}!
+      </h2>
+    );
+  }
   return (
     <article>
-        {renderMatch}
+      <h1>
+        {matchData.player1} <span>vs</span> {matchData.player2}
+      </h1>
+      {winnerText}
+      <button
+        onClick={() => {
+          matchData.winnerName = matchData.player1;
+          setWinner(matchData.players[0]);
+        }}
+      >
+        {matchData.player1}
+      </button>
+      <button
+        onClick={() => {
+          matchData.winnerName = matchData.player2;
+          setWinner(matchData.players[1]);
+        }}
+      >
+        {matchData.player2}
+      </button>
     </article>
   );
 }
